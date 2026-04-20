@@ -9,36 +9,8 @@ out for real implementations without touching this file.
 
 import wx
 
-
-# ---------------------------------------------------------------------------
-# backend stubs — replace once backend is implemented
-# ---------------------------------------------------------------------------
-try:
-    from backend import get_profiles, save_profile, delete_profile, launch_profile
-except ImportError:
-    # placeholder implementations so the UI runs standalone
-    def get_profiles():
-        """Return a list of profile dicts: [{'id': int, 'name': str, 'resources': [str]}]"""
-        return [
-            {"id": 1, "name": "Database Assignment", "resources": ["https://docs.python.org", "/home/user/db_notes.txt"]},
-            {"id": 2, "name": "Study Session",       "resources": ["https://canvas.tamu.edu", "https://youtube.com"]},
-        ]
-
-    def save_profile(name: str, resources: list[str]) -> bool:
-        """Persist a new profile. Return True on success."""
-        print(f"[stub] save_profile({name!r}, {resources})")
-        return True
-
-    def delete_profile(profile_id: int) -> bool:
-        """Delete a profile by ID. Return True on success."""
-        print(f"[stub] delete_profile({profile_id})")
-        return True
-
-    def launch_profile(profile_id: int) -> bool:
-        """Open all resources in the profile. Return True on success."""
-        print(f"[stub] launch_profile({profile_id})")
-        return True
-
+from database import init_db
+from backend import get_profiles, save_profile, delete_profile, launch_profile
 
 # ---------------------------------------------------------------------------
 # add / edit profile dialog
@@ -256,6 +228,7 @@ class MainFrame(wx.Frame):
 # entry point
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
+    init_db(include_dummy=True)
     app = wx.App(False)
     frame = MainFrame()
     frame.Show()
