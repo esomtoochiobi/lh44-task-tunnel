@@ -158,3 +158,53 @@ def launch_profile(profile_id: int) -> bool:
             
     return True
     
+def add_resource(profile_id: int, resource: str) -> bool:
+    conn = get_connection()
+    try:
+        with conn:
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO resources (profile_id, resource) VALUES (?, ?)", (profile_id, resource))
+    except:
+        return False
+    finally:
+        conn.close()
+    return True
+
+def remove_resource(profile_id: int, resource: str) -> bool:
+    conn = get_connection()
+    try:
+        with conn:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM resources WHERE profile_id = ? AND resource = ?", (profile_id, resource))
+    except:
+        return False
+    finally:
+        conn.close()
+    return True
+
+def rename_profile(profile_id: int, new_name: str) -> bool:
+    conn = get_connection()
+    try:
+        with conn:
+            cursor = conn.cursor()
+            cursor.execute("UPDATE profiles SET name = ? WHERE id = ?", (new_name, profile_id))
+    except:
+        return False
+    finally:
+        conn.close()
+    return True
+
+def edit_resource(profile_id: int, old_resource: str, new_resource: str) -> bool:
+    conn = get_connection()
+    try:
+        with conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                "UPDATE resources SET resource = ? WHERE profile_id = ? AND resource = ?",
+                (new_resource, profile_id, old_resource)
+            )
+    except:
+        return False
+    finally:
+        conn.close()
+    return True
